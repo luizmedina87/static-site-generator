@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+
 class HTMLNode:
     def __init__(
         self, 
@@ -13,14 +14,14 @@ class HTMLNode:
         self.children = children
         self.props = props
 
-    def to_html(self):
+    def to_html(self) -> None:
         raise NotImplementedError
     
-    def props_to_html(self):
+    def props_to_html(self) -> str:
         formatted_string = ""
         if self.props:
             for key, value in self.props.items():
-                formatted_string += f" {key}={value}"
+                formatted_string += f''' {key}="{value}"'''
         return formatted_string
     
     def __eq__(self, other) -> bool:
@@ -34,4 +35,28 @@ class HTMLNode:
         )
 
     def __repr__(self) -> str:
-        return f"HTMLNode({self.tag}, {self.value}, {self.children}, {self.props})"
+        return f"HTMLNode({self.tag}, {self.value}, children: {self.children}, {self.props})"
+
+
+class LeafNode(HTMLNode):
+    def __init__(
+        self, 
+        tag: str | None, 
+        value: str, 
+        props: dict[str, str] | None = None
+    ):
+        super().__init__(tag, value, None, props)
+
+    def to_html(self) -> str:
+        if not self.value:
+            raise ValueError("Leaf node has no value")
+        if not self.tag:
+            return self.value
+        return f"<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>"
+    
+    def __repr__(self) -> str:
+        return f"HTMLNode({self.tag}, {self.value}, {self.props})"
+    
+
+
+        
