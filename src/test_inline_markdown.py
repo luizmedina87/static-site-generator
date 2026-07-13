@@ -1,6 +1,6 @@
 import unittest
 
-from inline_markdown import split_nodes_delimiter
+from inline_markdown import split_nodes_delimiter, extract_markdown_images, extract_markdown_links
 from textnode import TextNode, TextType
 
 
@@ -57,7 +57,7 @@ class TestInlineMarkdown(unittest.TestCase):
             ]
         )
         node_3 = TextNode("Incomplete ** boldening", TextType.TEXT)
-        with self.assertRaisesRegex(Exception, "Invalid Markdown syntax. Odd number of '\*\*'s."):
+        with self.assertRaisesRegex(Exception, r"Invalid Markdown syntax. Odd number of '\*\*'s."):
             split_nodes_delimiter([node_3], "**", TextType.BOLD)
 
     def test_delim_bold(self):
@@ -138,3 +138,19 @@ class TestInlineMarkdown(unittest.TestCase):
             ],
             new_nodes,
         )
+
+    def test_extract_markdown_images(self):
+        matches = extract_markdown_images(
+            "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png)"
+        )
+        matches2 = extract_markdown_images("")
+        self.assertListEqual([("image", "https://i.imgur.com/zjjcJKZ.png")], matches)
+        self.assertListEqual([], matches2)
+
+    def test_extract_markdown_links(self):
+        matches = extract_markdown_links(
+            "This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)"
+        )
+        matches2 = extract_markdown_links("")
+        self.assertListEqual([("to boot dev", "https://www.boot.dev"), ("to youtube", "https://www.youtube.com/@bootdotdev")], matches)
+        self.assertListEqual([], matches2)
