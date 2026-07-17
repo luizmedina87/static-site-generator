@@ -1,15 +1,10 @@
 import os
 import shutil
 
-from textnode import TextNode
-
-from copystatic import replace_static_public
-
-
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-ROOT_DIR = os.path.dirname(SCRIPT_DIR)
-STATIC_DIR = os.path.join(ROOT_DIR, "static")
-PUBLIC_DIR = os.path.join(ROOT_DIR, "public")
+from constants import (
+    STATIC_DIR,
+    PUBLIC_DIR
+)
 
 
 def replace_static_public():
