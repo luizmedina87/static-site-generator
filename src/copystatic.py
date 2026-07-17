@@ -12,7 +12,6 @@ STATIC_DIR = os.path.join(ROOT_DIR, "static")
 PUBLIC_DIR = os.path.join(ROOT_DIR, "public")
 
 
-
 def replace_static_public():
     if not os.path.exists(STATIC_DIR):
         raise Exception(f"{STATIC_DIR} not found")
