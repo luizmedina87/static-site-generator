@@ -103,3 +103,9 @@ def split_nodes_link(old_nodes: list[TextNode]) -> list[TextNode]:
             new_nodes.append(text_node)
     return new_nodes
 
+
+def extract_title(markdown: str) -> str:
+    match = re.search(r'^#\s+(.+)$', markdown, re.MULTILINE)
+    if match:
+        return match.group(1)
+    raise Exception("no h1 element found")

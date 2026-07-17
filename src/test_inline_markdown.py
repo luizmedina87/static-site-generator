@@ -6,7 +6,8 @@ from inline_markdown import (
     extract_markdown_links, 
     split_nodes_image,
     split_nodes_link,
-    text_to_textnodes
+    text_to_textnodes,
+    extract_title
 )
 from textnode import TextNode, TextType
 
@@ -251,6 +252,32 @@ class TestInlineMarkdown(unittest.TestCase):
             ],
             nodes
         )
+
+    def test_extract_title(self):
+        markdown_with_header = """
+# Should use this as header
+
+But should ignore this
+
+# Should also ignore this
+And this
+
+## And this as well
+"""
+        markdown_without_header = """
+#ThisIsNotAHeader
+
+## Should ignore everything
+
+Especially # this
+"""
+        self.assertEqual(
+            extract_title(markdown_with_header),
+            "Should use this as header"
+        )
+        with self.assertRaisesRegex(Exception, "no h1 element found"):
+            extract_title(markdown_without_header)
+        
 
 
 if __name__ == "__main__":
