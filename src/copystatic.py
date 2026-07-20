@@ -7,7 +7,7 @@ from constants import (
 )
 
 
-def replace_static_public():
+def replace_static_docs():
     if not os.path.exists(STATIC_DIR):
         raise Exception(f"{STATIC_DIR} not found")
     if os.path.exists(PUBLIC_DIR):

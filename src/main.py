@@ -1,4 +1,6 @@
-from copystatic import replace_static_public
+import sys
+
+from copystatic import replace_static_docs
 from generate_page import generate_pages_recursive
 from constants import (
     TEMPLATE_HTML,
@@ -8,8 +10,12 @@ from constants import (
 
 
 def main():
-    replace_static_public()
-    generate_pages_recursive(CONTENT_DIR, TEMPLATE_HTML, PUBLIC_DIR)
+    if len(sys.argv) < 2:
+        print("please provide the base path")
+        sys.exit(1)
+    basepath = sys.argv[1]
+    replace_static_docs()
+    generate_pages_recursive(CONTENT_DIR, TEMPLATE_HTML, PUBLIC_DIR, basepath)
 
 
 main()
