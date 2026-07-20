@@ -12,7 +12,7 @@ def generate_page(
         from_path: str, 
         template_path: str, 
         dest_path: str
-    ) -> None:
+) -> None:
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
 
     with open(from_path, "r") as from_file:
@@ -37,3 +37,27 @@ def generate_page(
 
     with open(dest_path, "w") as dest_file:
         dest_file.write(dest_content)
+
+
+def generate_pages_recursive(
+        dir_path_content: str, # start at CONTENT_DIR
+        template_path: str, # use TEMPLATE_HTML
+        dest_dir_path: str, # start at PUBLIC_DIR
+) -> None:
+    contents = os.listdir(dir_path_content)
+    for content in contents:
+        content_path = os.path.join(dir_path_content, content)
+        if os.path.isfile(content_path):
+            dest_dir_file_path = os.path.join(dest_dir_path, "index.html")
+            generate_page(
+                content_path,
+                template_path,
+                dest_dir_file_path
+            )
+        else:
+            recursive_dest_path = os.path.join(dest_dir_path, content)
+            generate_pages_recursive(
+                content_path, 
+                template_path, 
+                recursive_dest_path
+            )

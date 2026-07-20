@@ -1,17 +1,15 @@
-import os
-
 from copystatic import replace_static_public
-from generate_page import generate_page
+from generate_page import generate_pages_recursive
 from constants import (
-    INDEX_MD,
     TEMPLATE_HTML,
-    INDEX_HTML,
+    CONTENT_DIR,
+    PUBLIC_DIR,
 )
 
 
 def main():
     replace_static_public()
-    generate_page(INDEX_MD, TEMPLATE_HTML, INDEX_HTML)
+    generate_pages_recursive(CONTENT_DIR, TEMPLATE_HTML, PUBLIC_DIR)
 
 
 main()
